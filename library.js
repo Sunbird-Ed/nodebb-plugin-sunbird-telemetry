@@ -2,6 +2,24 @@ var user = module.parent.require('./user')
 var Plugin = (module.exports = {})
 const axios = require('axios')
 const { v4: uuidv4 } = require('uuid')
+const Settings = require.main.require('./src/settings')
+
+const constants = {
+  pluginSettings: new Settings(
+    'telemetry-url',
+    '1.0.0',
+    {
+      // Default settings
+      telemetryURL: null
+    },
+    false,
+    false
+  )
+}
+console.log(
+  constants,
+  '------------------------constants------------------------'
+)
 
 function getEData (
   eid,
@@ -32,6 +50,8 @@ function getEData (
 }
 
 function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
+  const settings = constants.pluginSettings.getWrapper()
+  console.log('--------settings------------', settings.telemetryURL)
   let payload = {
     id: 'api.sunbird.telemetry',
     ver: '3.0',
@@ -80,13 +100,12 @@ function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
     ]
   }
 
-  console.log('--------------------payload---------------------------')
-  console.log(payload)
+  console.log('--------------------payload---------------------------', payload)
 
   // https://dev.sunbirded.org/content/data/v1/telemetry
 
   axios
-    .post('https://dev.sunbirded.org/content/data/v1/telemetry', payload)
+    .post(settings.telemetryURL, payload)
     .then(async function (response) {
       console.log('>>>>>> res=ponse <<<<<<<<<', response.data)
       if (callFrom === 'EXTERNAL' && typeof res === 'object') {
@@ -110,38 +129,23 @@ function renderSend (req, res, next) {
   // console.log('>>>>>>>>>>>>>>>>>>>>', req)
   console.log('>>>>>>>>>>>>>>>>>>>>', req.body)
   console.log('>>>>>>>>>>>>>>>>>>>>', `IMPRESSION:${uuidv4()}`)
-  console.log(
-    '>>>>>>>>>>>>>>>>>>>>',
-    req.session.Session,
-    req.sessionID,
-    req.uid,
-    req.server
-  )
   const body = JSON.parse(Object.keys(req.body)[0])
-
   callTelemetryAPI(req.uid, req.sessionID, body, 'EXTERNAL', res)
 }
 
+function render (req, res, next) {
+  res.render('admin/plugins/telemetry-url', {})
+}
+
 Plugin.load = function (params, callback) {
-  console.log(
-    '-----------------********************************************************-------------------------'
-  )
-  console.log(
-    '-----------------********************************************************-------------------------'
-  )
-  console.log(
-    '-----------------********************************************************-------------------------'
-  )
-  console.log(
-    '-----------------********************************************************-------------------------'
-  )
-  console.log(
-    '-----------------********************************************************-------------------------'
-  )
-  console.log('-----------------', params, '-------------------------')
   var router = params.router
 
   // Define the function that renders the custom route.
+  router.get(
+    '/admin/plugins/telemetry-url',
+    params.middleware.admin.buildHeader,
+    render
+  )
   router.post('/api/telemerty', renderSend)
   callback()
 }
@@ -186,4 +190,16 @@ Plugin.userUnFollow = function (params, callback) {
   console.log(body)
   callTelemetryAPI(params.fromUid, '', body, 'EXTERNAL', '')
   //callback()
+}
+
+Plugin.admin = {
+  menu: function (custom_header, callback) {
+    custom_header.plugins.push({
+      route: '/plugins/telemetry-url',
+      icon: 'fa-check',
+      name: 'Add telemetry URL'
+    })
+
+    callback(null, custom_header)
+  }
 }
