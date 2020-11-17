@@ -192,6 +192,27 @@ Plugin.userUnFollow = function (params, callback) {
   //callback()
 }
 
+Plugin.updatePostVoteCount = function (params, callback) {
+  console.log('-----------------', params, '-------------------------')
+  console.log(
+    '-----------------**************************-------------------------'
+  )
+  var body = getEData(
+    'INTERACT',
+    'profile-other',
+    'User action',
+    '',
+    'User taps on vote',
+    'User action',
+    '',
+    'params',
+    '',
+    ''
+  )
+  console.log(body)
+  callTelemetryAPI(params.fromUid, '', body, 'EXTERNAL', '')
+}
+
 Plugin.admin = {
   menu: function (custom_header, callback) {
     custom_header.plugins.push({

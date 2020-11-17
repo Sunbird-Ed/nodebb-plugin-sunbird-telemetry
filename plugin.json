@@ -8,7 +8,8 @@
 		{ "hook": "static:app.load", "method": "load" },
 		{ "hook": "filter:admin.header.build", "method": "admin.menu" },
 		{ "hook": "action:user.follow", "method": "userFollow" },
-		{ "hook": "action:user.unfollow", "method": "userUnFollow" }
+		{ "hook": "action:user.unfollow", "method": "userUnFollow" },
+		{ "hook": "action:post.updatePostVoteCount", "method": "updatePostVoteCount" }
 	],
 	"acpScripts": ["public/js/admin.js"]
 }
