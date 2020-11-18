@@ -16,10 +16,7 @@ const constants = {
     false
   )
 }
-console.log(
-  constants,
-  '------------------------constants------------------------'
-)
+
 
 function getEData (
   eid,
@@ -193,14 +190,12 @@ Plugin.userUnFollow = function (params, callback) {
 }
 
 Plugin.updatePostVoteCount = function (params, callback) {
-  console.log('-----------------', params, '-------------------------')
-  console.log(
-    '-----------------**************************-------------------------'
-  )
+  console.log('-------user taps on post ----------', params)
+
   var body = getEData(
     'INTERACT',
-    'profile-other',
-    'User action',
+    'topics-page',
+    'resume',
     '',
     'User taps on vote',
     'User action',
@@ -210,7 +205,26 @@ Plugin.updatePostVoteCount = function (params, callback) {
     ''
   )
   console.log(body)
-  callTelemetryAPI(params.fromUid, '', body, 'EXTERNAL', '')
+  callTelemetryAPI(params.post.uid, '', body, 'EXTERNAL', callback)
+}
+
+Plugin.topicReply = function (params, callback) {
+  console.log('-------user taps on reply ----------', params)
+
+  var body = getEData(
+    'INTERACT',
+    'topics-page',
+    'resume',
+    '',
+    'User reply on topic',
+    'User action',
+    '',
+    'params',
+    '',
+    ''
+  )
+  console.log(body)
+  callTelemetryAPI(params.post.uid, '', body, 'EXTERNAL', callback)
 }
 
 Plugin.admin = {

@@ -9,7 +9,8 @@
 		{ "hook": "filter:admin.header.build", "method": "admin.menu" },
 		{ "hook": "action:user.follow", "method": "userFollow" },
 		{ "hook": "action:user.unfollow", "method": "userUnFollow" },
-		{ "hook": "action:post.updatePostVoteCount", "method": "updatePostVoteCount" }
+		{ "hook": "action:post.updatePostVoteCount", "method": "updatePostVoteCount" },
+		{ "hook": "action:topic.reply", "method": "topicReply" }
 	],
 	"acpScripts": ["public/js/admin.js"]
 }
