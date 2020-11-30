@@ -48,7 +48,6 @@ function getEData (
 
 function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
   const settings = constants.pluginSettings.getWrapper()
-  console.log('--------settings------------', settings.telemetryURL)
   let payload = {
     id: 'api.sunbird.telemetry',
     ver: '3.0',
@@ -97,14 +96,12 @@ function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
     ]
   }
 
-  console.log('--------------------payload---------------------------', payload)
 
   // https://dev.sunbirded.org/content/data/v1/telemetry
 
   axios
     .post(settings.telemetryURL, payload)
     .then(async function (response) {
-      console.log('>>>>>> res=ponse <<<<<<<<<', response.data)
       if (callFrom === 'EXTERNAL' && typeof res === 'object') {
         res.send({
           status: true,
@@ -115,7 +112,6 @@ function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
     })
     .catch(function (error) {
       // handle error
-      console.log(error)
       if (callFrom === 'EXTERNAL' && typeof res === 'object') {
         res.send({ status: false, message: 'Its not passed', data: null })
       }
@@ -123,9 +119,7 @@ function callTelemetryAPI (uid, sessionID, body, callFrom, res) {
 }
 
 function renderSend (req, res, next) {
-  // console.log('>>>>>>>>>>>>>>>>>>>>', req)
-  console.log('>>>>>>>>>>>>>>>>>>>>', req.body)
-  console.log('>>>>>>>>>>>>>>>>>>>>', `IMPRESSION:${uuidv4()}`)
+ 
   const body = JSON.parse(Object.keys(req.body)[0])
   callTelemetryAPI(req.uid, req.sessionID, body, 'EXTERNAL', res)
 }
@@ -148,7 +142,6 @@ Plugin.load = function (params, callback) {
 }
 
 Plugin.userFollow = function (params, callback) {
-  console.log('-----------------', params, '-------------------------')
   var body = getEData(
     'INTERACT',
     'profile-other',
@@ -161,16 +154,12 @@ Plugin.userFollow = function (params, callback) {
     '',
     ''
   )
-  console.log(body)
   callTelemetryAPI(params.fromUid, '', body, 'EXTERNAL', '')
   //callback()
 }
 
 Plugin.userUnFollow = function (params, callback) {
-  console.log('-----------------', params, '-------------------------')
-  console.log(
-    '-----------------**************************-------------------------'
-  )
+
   //getEData(eid,pageid,type,uri,eName,eType,eSubtype,epageid,euri,evisits)
   var body = getEData(
     'INTERACT',
@@ -184,13 +173,11 @@ Plugin.userUnFollow = function (params, callback) {
     '',
     ''
   )
-  console.log(body)
   callTelemetryAPI(params.fromUid, '', body, 'EXTERNAL', '')
   //callback()
 }
 
 Plugin.updatePostVoteCount = function (params, callback) {
-  console.log('-------user taps on post ----------', params)
 
   var body = getEData(
     'INTERACT',
@@ -204,12 +191,10 @@ Plugin.updatePostVoteCount = function (params, callback) {
     '',
     ''
   )
-  console.log(body)
   callTelemetryAPI(params.post.uid, '', body, 'EXTERNAL', callback)
 }
 
 Plugin.topicReply = function (params, callback) {
-  console.log('-------user taps on reply ----------', params)
 
   var body = getEData(
     'INTERACT',
@@ -223,7 +208,6 @@ Plugin.topicReply = function (params, callback) {
     '',
     ''
   )
-  console.log(body)
   callTelemetryAPI(params.post.uid, '', body, 'EXTERNAL', callback)
 }
 

@@ -1,5 +1,4 @@
 $(window).on('action:ajaxify.end', function (event, data) {
-  console.log('-------- data ----------', data, event)
   var xhttp = new XMLHttpRequest()
 
   var paylod = {}
@@ -30,8 +29,7 @@ $(window).on('action:ajaxify.end', function (event, data) {
       )
       xhttp.onload = function () {
         var jsonResponse = JSON.parse(xhttp.responseText)
-        console.log(jsonResponse, '=========================')
-        console.log(jsonResponse.data, '==========>>>>>>>>>>>===============')
+      
         // do something with jsonResponse
       }
       xhttp.send(JSON.stringify(payload))
@@ -58,8 +56,7 @@ $(window).on('action:ajaxify.end', function (event, data) {
       )
       xhttp.onload = function () {
         var jsonResponse = JSON.parse(xhttp.responseText)
-        console.log(jsonResponse, '=========================')
-        console.log(jsonResponse.data, '==========>>>>>>>>>>>===============')
+       
         // do something with jsonResponse
       }
       xhttp.send(JSON.stringify(payload))
@@ -86,8 +83,7 @@ $(window).on('action:ajaxify.end', function (event, data) {
       )
       xhttp.onload = function () {
         var jsonResponse = JSON.parse(xhttp.responseText)
-        console.log(jsonResponse, '=========================')
-        console.log(jsonResponse.data, '==========>>>>>>>>>>>===============')
+      
         // do something with jsonResponse
       }
       xhttp.send(JSON.stringify(payload))

@@ -3,17 +3,13 @@
 
 define('admin/plugins/telemetry-url', ['settings'], function (Settings) {
   var Admin = {}
-  console.log(
-    '---------helllooooouuuuuuuuuuuu----------------ooooooooooooooooooo-----'
-  )
+ 
 
   Admin.init = function () {
-    console.log('---------hellloooooooooooooooooooooooo-----')
     Admin.initSettings()
   }
 
   Admin.initSettings = function () {
-    console.log('---coming ----------------')
     Settings.load('telemetry-url', $('.telemetry-url-settings'))
 
     $('.save').on('click', function () {
